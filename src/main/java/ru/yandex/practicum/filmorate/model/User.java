@@ -1,25 +1,25 @@
 package ru.yandex.practicum.filmorate.model;
 
-
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class Film {
+public class User {
 
     @Positive
     private int id;
 
     @NotBlank
+    @Email
+    private String email;
+
+    @NotBlank
+    @Pattern(regexp = "\\S+")
+    private String login;
+
     private String name;
 
-    @Size(max = 200)
-    private String description;
-
-    @PastOrPresent
-    private LocalDate releaseDate;
-
-    @Positive
-    private int duration;
+    @Past
+    private LocalDate birthday;
 }
