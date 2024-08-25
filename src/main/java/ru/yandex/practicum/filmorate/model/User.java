@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class User {
 
-    @Positive
+    @PositiveOrZero
     private int id;
 
     @NotBlank

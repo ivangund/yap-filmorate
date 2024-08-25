@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class Film {
 
-    @Positive
+    @PositiveOrZero
     private int id;
 
     @NotBlank
