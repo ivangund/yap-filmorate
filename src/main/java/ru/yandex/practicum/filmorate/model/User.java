@@ -12,12 +12,15 @@ public class User {
 
     @NotBlank
     @Email
+    @Size(max = 200)
     private String email;
 
     @NotBlank
     @Pattern(regexp = "\\S+")
+    @Size(max = 20)
     private String login;
 
+    @Size(max = 200)
     private String name;
 
     @Past
