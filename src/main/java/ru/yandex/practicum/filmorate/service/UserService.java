@@ -61,10 +61,6 @@ public class UserService {
             if (friendFriends != null) {
                 friendFriends.remove(userId);
             }
-        } else {
-            throw new NotFoundException(
-                    "Пользователь с ID " + friendId + " не является другом пользователя с ID "
-                            + userId + ".");
         }
     }
 
