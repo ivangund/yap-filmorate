@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -21,43 +22,49 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> addFilm(@Valid @RequestBody Film film) {
         Film addedFilm = filmService.addFilm(film);
         log.info("Фильм '{}' успешно добавлен.", addedFilm.getName());
-        return addedFilm;
+        return ResponseEntity.status(201).body(addedFilm);
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> updateFilm(@Valid @RequestBody Film film) {
         Film updatedFilm = filmService.updateFilm(film);
         log.info("Фильм '{}' успешно обновлен.", updatedFilm.getName());
-        return updatedFilm;
+        return ResponseEntity.ok(updatedFilm);
     }
 
     @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable int id) {
-        return filmService.getFilmById(id);
+    public ResponseEntity<Film> getFilmById(@PathVariable int id) {
+        Film film = filmService.getFilmById(id);
+        return ResponseEntity.ok(film);
     }
 
     @GetMapping
-    public List<Film> getAllFilms() {
-        return filmService.getAllFilms();
+    public ResponseEntity<List<Film>> getAllFilms() {
+        List<Film> films = filmService.getAllFilms();
+        return ResponseEntity.ok(films);
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable int id, @PathVariable int userId) {
+    public ResponseEntity<Void> addLike(@PathVariable int id, @PathVariable int userId) {
         filmService.addLike(id, userId);
         log.info("Пользователь с ID {} поставил лайк фильму с ID {}", userId, id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable int id, @PathVariable int userId) {
+    public ResponseEntity<Void> removeLike(@PathVariable int id, @PathVariable int userId) {
         filmService.removeLike(id, userId);
         log.info("Пользователь с ID {} удалил лайк у фильма с ID {}", userId, id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/popular")
-    public List<Film> getMostPopularFilms(@RequestParam(defaultValue = "10") int count) {
-        return filmService.getMostPopularFilms(count);
+    public ResponseEntity<List<Film>> getMostPopularFilms(
+            @RequestParam(defaultValue = "10") int count) {
+        List<Film> popularFilms = filmService.getMostPopularFilms(count);
+        return ResponseEntity.ok(popularFilms);
     }
 }
