@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.handler;
 
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.ErrorResponse;
@@ -7,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import java.util.stream.Collectors;
+import jakarta.validation.ConstraintViolationException;
 
 @Slf4j
 @RestControllerAdvice
@@ -29,6 +30,17 @@ public class GlobalExceptionHandler {
                         error.getDefaultMessage()))
                 .collect(Collectors.joining("; "));
         log.warn("Ошибки валидации: {}", errorMessage);
+        return new ErrorResponse(errorMessage);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
+        String errorMessage = e.getConstraintViolations().stream()
+                .map(violation -> String.format("Параметр '%s': %s",
+                        violation.getPropertyPath(), violation.getMessage()))
+                .collect(Collectors.joining("; "));
+        log.warn("Ошибки валидации параметров: {}", errorMessage);
         return new ErrorResponse(errorMessage);
     }
 
