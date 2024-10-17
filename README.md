@@ -1,4 +1,5 @@
 # java-filmorate
-![image](https://github.com/user-attachments/assets/dd62eb5e-7f33-4280-9c46-48d832282a8e)
+![image](https://github.com/user-attachments/assets/7da68b50-aadc-48cf-9d7c-e8e28687ef95)
+
 
 
